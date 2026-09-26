@@ -1,9 +1,9 @@
 
 
-const header = () => {
+function Header() {
   return (
-    <div>header</div>
+    <header>Meetwell</header>
   )
 }
 
-export default header
+export default Header

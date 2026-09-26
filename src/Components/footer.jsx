@@ -1,9 +1,12 @@
 
 
-const footer = () => {
+function Footer() {
   return (
-    <div>footer</div>
+    <footer className="footer">
+      <span>MEET WELL.</span>
+      <span>GOOD THINGS HAPPEN IN PERSON.</span>
+    </footer>
   )
 }
 
-export default footer
+export default Footer

@@ -19,4 +19,4 @@ npm install
 npm run dev
 ```
 
-Events and registration counts currently live in browser memory and reset when the page reloads. Persistent registrations require a database or other backend.
+Events and registration counts are saved in the current browser's local storage, so they persist after reloads on that device. This data is not shared with other visitors or devices; shared registrations require a cloud database and backend.

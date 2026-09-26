@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const initialEvents = [
@@ -37,6 +37,21 @@ const initialEvents = [
 ]
 
 const blankEvent = { title: '', date: '', location: '', capacity: '' }
+const eventStorageKey = 'jan-zyrius.events.v1'
+
+function loadEvents() {
+  try {
+    const savedEvents = localStorage.getItem(eventStorageKey)
+    if (savedEvents) {
+      const parsedEvents = JSON.parse(savedEvents)
+      if (Array.isArray(parsedEvents)) return parsedEvents
+    }
+  } catch {
+    // Use the starter events when browser storage is unavailable or invalid.
+  }
+
+  return initialEvents
+}
 
 function formatDate(date) {
   return new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
@@ -47,10 +62,18 @@ function formatDate(date) {
 }
 
 function App() {
-  const [events, setEvents] = useState(initialEvents)
+  const [events, setEvents] = useState(loadEvents)
   const [formOpen, setFormOpen] = useState(false)
   const [formValues, setFormValues] = useState(blankEvent)
   const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(eventStorageKey, JSON.stringify(events))
+    } catch {
+      // Keep the app usable if the browser blocks local storage.
+    }
+  }, [events])
 
   const totalRegistered = events.reduce((total, event) => total + event.registered, 0)
   const totalCapacity = events.reduce((total, event) => total + event.capacity, 0)
@@ -90,9 +113,9 @@ function App() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <a className="wordmark" href="#home" aria-label="Gather home">
-          <span className="wordmark-mark" aria-hidden="true">g</span>
-          <span>gather<span className="wordmark-period">.</span></span>
+        <a className="wordmark" href="#home" aria-label="Meetwell home">
+          <span className="wordmark-mark" aria-hidden="true">m</span>
+          <span>meetwell<span className="wordmark-period">.</span></span>
         </a>
         <div className="topbar-right">
           <span className="workspace-label"><span className="status-dot" /> Brooklyn events</span>
@@ -179,7 +202,7 @@ function App() {
           {filteredEvents.length === 0 && <p className="empty-state">No events found. Try another title or location.</p>}
         </div>
       </section>
-      <footer className="footer"><span>GATHER AROUND.</span><span>GOOD THINGS HAPPEN IN PERSON.</span></footer>
+      <footer className="footer"><span>MEET WELL.</span><span>GOOD THINGS HAPPEN IN PERSON.</span></footer>
     </main>
   )
 }

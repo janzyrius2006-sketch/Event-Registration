@@ -1,7 +1,7 @@
-const maincomponent = () => {
+function MainComponent() {
   return (
-    <div>maincomponent</div>
+    <section aria-label="Main content">Main content</section>
   )
 }
 
-export default maincomponent
+export default MainComponent
